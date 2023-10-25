@@ -1,4 +1,4 @@
-TARGET := lcp.cpp
+TARGET := SuffixStructures/lcp.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
