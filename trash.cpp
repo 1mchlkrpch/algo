@@ -103,7 +103,7 @@ class sfxarr {
 			// We we do new class if they differ by the first part
 			// or the second.
 			next_int_eqv[sfxarr_[0]] = 0;
-			for (int i = 1; i < sz; ++i) {
+			for (int i = 0; i < sz; ++i) {
 				next_int_eqv[sfxarr_[i]] = next_int_eqv[sfxarr_[i - 1]];
 				if (int_eqv[sfxarr_[i]] != int_eqv[sfxarr_[i - 1]]) {
 					++next_int_eqv[sfxarr_[i]];
@@ -119,34 +119,29 @@ class sfxarr {
 	}
 
 	void build_lcp() {
-		int sz = (int)str_.size();
-		// inv_sfxarr[i]: i-th symbol in str_.
-		std::vector<int> inv_sfxarr(str_.size());
+		int sz = str_.size();
+
+		std::vector<int> inv_sfxarr(sz, 0);
 		for (int i = 0; i < sz; ++i) {
 			inv_sfxarr[sfxarr_[i]] = i;
 		}
 
 		int start_len = 0;
 		for (int i = 0; i < (int)lcp_.size(); ++i) {
-			// Get index(in sfxarr_), largest (length) sfx.
-			// inv_sfxarr[i] is index in sfxarr_ that it starts with
-			// i-th symbol in str.
-			// https://www.cs.helsinki.fi/u/tpkarkka/opetus/12s/spa/lecture10.pdf
-			int sa_pos = inv_sfxarr[i];
-			if (sa_pos == 0) {
+			// return index in sfxarr of suffix with i-th first letter.
+			int idx_in_sfxarr = inv_sfxarr[i];
+			if (idx_in_sfxarr == 0) {
 				continue;
 			}
 
-			// prev index in (lg) order.
-			int sa_prev_suffix = sfxarr_[sa_pos - 1];			
+			int prev_str_let_idx = sfxarr_[idx_in_sfxarr - 1];
 			int pfx_len = start_len;
-			while ( pfx_len < sz - i &&
-					pfx_len < sz - sa_prev_suffix &&
-					str_[sa_prev_suffix + pfx_len] == str_[i + pfx_len]) {
+			while (pfx_len < sz - i && pfx_len < sz - prev_str_let_idx
+					&& str_[i + pfx_len] == str_[prev_str_let_idx + pfx_len]) {
 				++pfx_len;
 			}
 
-			lcp_[sa_pos - 1] = pfx_len;
+			lcp_[idx_in_sfxarr - 1] = pfx_len;
 
 			start_len = (pfx_len == 0)? 0 : pfx_len - 1;
 		}
