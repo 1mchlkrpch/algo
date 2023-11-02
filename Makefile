@@ -1,4 +1,4 @@
-TARGET := SuffixStructures/pfunc.cpp
+TARGET := graph/dijkstra.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
