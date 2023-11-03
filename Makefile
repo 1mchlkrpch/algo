@@ -1,4 +1,4 @@
-TARGET := structs/d_heap.cpp
+TARGET := sorts/radix.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
