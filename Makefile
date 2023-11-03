@@ -1,4 +1,4 @@
-TARGET := sorts/radix.cpp
+TARGET := trash.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)

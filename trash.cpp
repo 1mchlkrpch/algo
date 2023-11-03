@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 
 #include <vector>
 
@@ -10,48 +11,65 @@ void print_arr(const std::vector<int>& v, int start_idx=0, int adjustment=0) {
 	std::cout << '\n';
 }
 
-std::vector<int> pfunc(std::string& s) {
-	std::vector<int> p(s.size(), 0);
+static constexpr int kCapacity = 10;
 
-	p[0] = 0;
-	for (int i = 1; i < (int)s.size(); ++i) {
-		int j = p[i - 1];
-
-		while (j > 0 && s[j] != s[i]) {
-			j = p[j - 1];
-		}
-		
-		if (s[j] == s[i]) {
-			++j;
-		}
-
-		p[i] = j;
+int maxPowCap(std::vector<int>& v) {
+	int max_num = std::numeric_limits<int>::min();
+	for (int i = 0; i < (int)v.size(); ++i) {
+		max_num = std::max(max_num, v[i]);
 	}
 
-	return p;
+	int ten_pow = 1;
+	while (ten_pow < max_num) {
+		ten_pow *= kCapacity;
+	}
+	return ten_pow / kCapacity;
 }
 
-int kpm(std::string p, std::string t) {
-	std::string s = p + "#" + t;
+std::vector<int> radix_sort(std::vector<int>& v) {
+	std::vector<int> sorted(v.begin(), v.end());
 
-	std::vector<int> pfunc_arr = pfunc(s);
-	for (int i = 0; i < (int)pfunc_arr.size(); ++i) {
-		if (pfunc_arr[i] == p.size()) {
-			return i;
+	std::vector<int> shuffle[kCapacity];
+	for (int i = 0; i < (int)sorted.size(); ++i) {
+		shuffle[sorted[i] % kCapacity].push_back(sorted[i]);
+	}
+	int k = 0;
+	for (int i = 0; i < kCapacity; ++i) {
+		for (int j = 0; j < (int)shuffle[i].size(); ++j) {
+			sorted[k++] = shuffle[i][j];
 		}
+		shuffle[i].clear();
 	}
 
-	print_arr(pfunc_arr);
+	print_arr(sorted);
 
-	return -1;
+	int pow = maxPowCap(v);
+	int cur_pow = kCapacity;
+	while (cur_pow <= pow) {
+		for (int i = 0; i < (int)sorted.size(); ++i) {
+			shuffle[(sorted[i] / cur_pow) % kCapacity].push_back(sorted[i]);
+		}
+		int k = 0;
+		for (int i = 0; i < kCapacity; ++i) {
+			for (int j = 0; j < (int)shuffle[i].size(); ++j) {
+				sorted[k++] = shuffle[i][j];
+			}
+			shuffle[i].clear();
+		}
+		print_arr(sorted);
+		cur_pow *= kCapacity;
+	}
+
+	return sorted;
 }
 
 };
 
 int main() {
-	std::string str("l;jl;kjlkoMishajlkjl;jl;j");
-	int ans = algo::kpm(std::string("Misha"), str);
-	std::cout << ans << '\n';
+	std::vector<int> to_sort({29, 24, 121, 1016, 18});
+	std::vector<int> sorted = algo::radix_sort(to_sort);
+
+	algo::print_arr(sorted);
 
 	return 0;
 }
