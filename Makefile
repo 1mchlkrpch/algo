@@ -1,4 +1,4 @@
-TARGET := graph/dijkstra.cpp
+TARGET := structs/d_heap.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
