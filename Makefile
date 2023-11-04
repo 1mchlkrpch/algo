@@ -1,4 +1,4 @@
-TARGET := tasks/printers.cpp
+TARGET := tasks/sqrt_decomposition.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
