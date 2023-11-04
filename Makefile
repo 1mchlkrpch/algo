@@ -1,4 +1,4 @@
-TARGET := trash.cpp
+TARGET := sorts/bin_search.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
