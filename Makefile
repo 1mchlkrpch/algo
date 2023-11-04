@@ -1,4 +1,4 @@
-TARGET := sorts/bin_search.cpp
+TARGET := tasks/printers.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
