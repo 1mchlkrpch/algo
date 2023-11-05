@@ -15,60 +15,43 @@ static constexpr int kCapacity = 10;
 
 int maxPowCap(std::vector<int>& v) {
 	int max_num = std::numeric_limits<int>::min();
-	for (int i = 0; i < (int)v.size(); ++i) {
-		max_num = std::max(max_num, v[i]);
+	for (auto num : v) {
+		max_num = std::max(num, max_num);
 	}
-
-	int ten_pow = 1;
-	while (ten_pow < max_num) {
-		ten_pow *= kCapacity;
+	int pow = 1;
+	while (pow <= max_num) {
+		pow *= kCapacity;
 	}
-	return ten_pow / kCapacity;
+	return pow / kCapacity;
 }
 
 std::vector<int> radix_sort(std::vector<int>& v) {
-	std::vector<int> sorted(v.begin(), v.end());
+	std::vector<int> res(v);
+	int max_pow = maxPowCap(v);
 
 	std::vector<int> shuffle[kCapacity];
-	for (int i = 0; i < (int)sorted.size(); ++i) {
-		shuffle[sorted[i] % kCapacity].push_back(sorted[i]);
-	}
-	int k = 0;
-	for (int i = 0; i < kCapacity; ++i) {
-		for (int j = 0; j < (int)shuffle[i].size(); ++j) {
-			sorted[k++] = shuffle[i][j];
-		}
-		shuffle[i].clear();
-	}
-
-	print_arr(sorted);
-
-	int pow = maxPowCap(v);
-	int cur_pow = kCapacity;
-	while (cur_pow <= pow) {
-		for (int i = 0; i < (int)sorted.size(); ++i) {
-			shuffle[(sorted[i] / cur_pow) % kCapacity].push_back(sorted[i]);
+	int cur_pow = 1;
+	while (cur_pow <= max_pow) {
+		for (int i = 0; i < (int)res.size(); ++i) {
+			shuffle[(res[i] / cur_pow) % kCapacity].push_back(res[i]);
 		}
 		int k = 0;
 		for (int i = 0; i < kCapacity; ++i) {
 			for (int j = 0; j < (int)shuffle[i].size(); ++j) {
-				sorted[k++] = shuffle[i][j];
+				res[k++] = shuffle[i][j];
 			}
 			shuffle[i].clear();
 		}
-		print_arr(sorted);
 		cur_pow *= kCapacity;
 	}
 
-	return sorted;
+	return res;
 }
-
 };
 
 int main() {
 	std::vector<int> to_sort({29, 24, 121, 1016, 18});
 	std::vector<int> sorted = algo::radix_sort(to_sort);
-
 	algo::print_arr(sorted);
 
 	return 0;

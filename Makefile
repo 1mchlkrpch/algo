@@ -1,8 +1,8 @@
-TARGET := tasks/sqrt_decomposition.cpp
+TARGET := SuffixStructures/trie.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
-	@./$(EXECUTABLE)
+	@./$(EXECUTABLE) < input
 
 $(EXECUTABLE): $(TARGET)
 	g++ -g -Wno-unused-variable -Waggressive-loop-optimizations -Wall -Wextra -Wpedantic $< -o $@
