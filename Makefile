@@ -1,4 +1,4 @@
-TARGET := SuffixStructures/trie.cpp
+TARGET := SuffixStructures/aho_corasick.cpp
 EXECUTABLE := algo
 
 all: $(EXECUTABLE)
